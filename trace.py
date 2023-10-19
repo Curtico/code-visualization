@@ -1,5 +1,6 @@
 import json
 import sys
+import subprocess
 
 #------------------#
 # Main (obviously) #
@@ -7,7 +8,15 @@ import sys
 def main(argv):
     trace_input_json = jsonify_java(sys.argv[1])
 
-    print(trace_input_json) # DEBUG
+    # print(trace_input_json) # DEBUG
+
+    traceprinter_command = "../java/bin/java -cp .:javax.json-1.0.jar:../java/lib/tools.jar traceprinter.InMemory"
+
+    trace_proc = subprocess.Popen(traceprinter_command.split(), stdout=subprocess.PIPE, stdin=subprocess.PIPE, cwd="./traceprinter_backend/cp")
+
+    trace_output_json = trace_proc.communicate(input=trace_input_json.encode())[0]
+
+    print(trace_output_json.decode('utf-8'))
 
 #------------------------------------#
 # Convert Java source to usable JSON #
