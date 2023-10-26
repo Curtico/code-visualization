@@ -14,9 +14,9 @@ def main(argv):
 
     trace_proc = subprocess.Popen(traceprinter_command.split(), stdout=subprocess.PIPE, stdin=subprocess.PIPE, cwd="./traceprinter_backend/cp")
 
-    trace_output_json = json.loads(trace_proc.communicate(input=trace_input_json.encode())[0])
+    trace_output_dict = json.loads(trace_proc.communicate(input=trace_input_json.encode())[0])
 
-    print(json.dumps(trace_output_json))
+    step_bro(json.loads(trace_input_json), trace_output_dict)
 
 #------------------------------------#
 # Convert Java source to usable JSON #
@@ -37,6 +37,15 @@ def jsonify_java(filename):
 
     # Return
     return json.dumps(trace_input_dict)
+
+#---------------------------------#
+# PoC: Step through program trace #
+#---------------------------------#
+def step_bro(input_json, output_json):
+    source_code = input_json['usercode'].split('\n') # Source code being traced
+    events = output_json['trace'] # List of entries pertaining to program state
+    for state in events:
+        print(state)
 
 #---------------------------------#
 # This is where the fun begins :D #
