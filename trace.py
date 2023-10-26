@@ -14,9 +14,9 @@ def main(argv):
 
     trace_proc = subprocess.Popen(traceprinter_command.split(), stdout=subprocess.PIPE, stdin=subprocess.PIPE, cwd="./traceprinter_backend/cp")
 
-    trace_output_json = trace_proc.communicate(input=trace_input_json.encode())[0]
+    trace_output_json = json.loads(trace_proc.communicate(input=trace_input_json.encode())[0])
 
-    print(trace_output_json.decode('utf-8'))
+    print(json.dumps(trace_output_json))
 
 #------------------------------------#
 # Convert Java source to usable JSON #
@@ -30,13 +30,10 @@ def jsonify_java(filename):
         "stdin": ""
     }
 
-    # Put all the code on one line
+    # Read source file
     source_code = open(filename, 'r')
-    while line := source_code.readline().strip():
-        trace_input_dict["usercode"] += line + ' '
-
+    trace_input_dict["usercode"] = source_code.read()
     source_code.close()
-    trace_input_dict["usercode"] = trace_input_dict["usercode"].strip()
 
     # Return
     return json.dumps(trace_input_dict)
