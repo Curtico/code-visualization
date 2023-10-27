@@ -12,7 +12,10 @@ def main(argv):
 
     traceprinter_command = "../java/bin/java -cp .:javax.json-1.0.jar:../java/lib/tools.jar traceprinter.InMemory"
 
-    trace_proc = subprocess.Popen(traceprinter_command.split(), stdout=subprocess.PIPE, stdin=subprocess.PIPE, cwd="./traceprinter_backend/cp")
+    trace_proc = subprocess.Popen(traceprinter_command.split(),
+                                  stdout=subprocess.PIPE,
+                                  stdin=subprocess.PIPE,
+                                  cwd="./traceprinter_backend/cp")
 
     trace_output_dict = json.loads(trace_proc.communicate(input=trace_input_json.encode())[0])
 
@@ -45,7 +48,13 @@ def step_bro(input_json, output_json):
     source_code = input_json['usercode'].split('\n') # Source code being traced
     events = output_json['trace'] # List of entries pertaining to program state
     for state in events:
-        print(state)
+        print(f"\n{state['event']}: <{state['stack_to_render'][0]['func_name']}>")
+        print(f"\tCode: {state['line']} | {source_code[state['line'] - 1].strip()}")
+        print(f"\tLocals: {state['stack_to_render'][0]['encoded_locals']}")
+        print(f"\tGlobals: {state['globals']}")
+        print(f"stdout: {{\n{state['stdout']}\n}}")
+        print("")
+        input("Press ENTER to continue...")
 
 #---------------------------------#
 # This is where the fun begins :D #
