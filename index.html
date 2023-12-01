@@ -1,60 +1,225 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Code Visualization</title>
-    </head>
-    <body>
-        <h1>Project: Code Visualization</h1>
-        <table border="3">
-        <tr align='center'>
-            <th>Members</th>
-            <th width="300px">Contact</th>
-            
-        </tr>
-        <tr align='center'>
-            <td>Joshua Hartzfeld</td>
-            <td>jhartzfeld2020@my.fit.edu</td>
-            
-        </tr>
-        <tr align='center'>
-            <td>Catherine DiResta</td>
-            <td>cdiresta2019@my.fit.edu</td>
-            
-        </tr>
-        <tr align='center'>
-            <td> Curtice Gough </td>
-            <td> cgough2019@my.fit.edu </td>
-            
-        </tr>
-        <tr align='center'>
-            <td> <b>Faculty Advisor/Client </b> </td>
-            <td>  </td>
-            
-        </tr>
-        <tr align='center'>
-          <td> Ryan Stansifer </td>
-          <td> ryan@fit.edu</td>
-        </tr>
-        <!-- Add more rows as needed -->
-    </table>
-        <h2>Documents</h1>
-        <table border="3">
-            <tr align="center"> 
-                <td width="200px"><b>Project Plan (Sep 6)</b></td>
-                <td width="400px"><b><a href="docs/plan_sem1.pdf">Project Plan </a>, <a href="docs/plan_presentation_sem1.pdf"> Presentation</b></td>
-            </tr>
-            <tr align="center"> 
-                <td><b>Milestone 1 (Oct 2)</b></td>
-                <td><b><a href="docs/mile1_presentation.pdf">Presentation</a>, <a href="docs/mile1_srs.pdf">Requirements</a>, <a href="docs/mile1_design.pdf">Design</a>, <a href="docs/mile1_test.pdf">Test</a>, <a href="docs/mile1_eval.pdf">Evaluation</a></b></td>
-            </tr>
-            <tr align="center"> 
-                <td><b>Milestone 2 (Oct 30)</b></td>
-                <td><b><a href="docs/mile2_presentation.pdf">Presentation</a>, <a href="docs/mile2_eval.pdf">Evaluation</a></b></td>
-            </tr>
-            <tr align="center"> 
-                <td><b>Milestone 3 (Nov 27)</b></td>
-                <td><b><a href="docs/mile3_presentation.pdf">Presentation</a>, <a href="docs/mile3_eval.pdf">Evaluation</a></b></td>
-            </tr>
-        </table>
-    </body>
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Code Visualization</title>
+  <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body class="background">
+  <div class="container">
+    <div>
+      <br />
+      <h1>Code Visualization</h1>
+      <div id="external-links">
+        <span class="external">
+          <img src="static/imgs/github.png" alt="">
+          <a href="https://github.com/curtico/code-visualization" class="card-link">GitHub</a>
+        </span>
+        <span class="external">
+          <img src="static/imgs/issues.png" alt="">
+          <a href="https://github.com/curtico/code-visualization/issues" class="card-link">Issues</a>
+        </span>
+        <span class="external">
+          <img src="static/imgs/download.png" alt="">
+          <a href="https://github.com/curtico/code-visualization/releases" class="card-link">Download</a>
+        </span>
+      </div>
+      <p>Faculty Advisor: <a href="https://cs.fit.edu/~ryan/">Dr. Ryan Stansifer</a></p>
+      <br />
+    </div>
+    <h2>The Developers</h2>
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="static/imgs/curtice.jpg" class="img-fluid rounded-start">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Curtice Gough</h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                  <a href="mailto:cgough2019@my.fit.edu" class="muted-link">cgough2019@my.fit.edu</a>
+                </h6>
+                <p class="card-body">5th-year Computer Science student specializing in Vulnerability Research.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="static/imgs/josh.jpg" class="img-fluid rounded-start">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Joshua Hartzfeld</h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                  <a href="mailto:jhartzfeld2020@my.fit.edu" class="muted-link">jhartzfeld2020@my.fit.edu</a>
+                </h6>
+                <p class="card-body">Computer Science senior.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="static/imgs/catherine.jpg" class="img-fluid rounded-start">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Catherine DiResta</h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                  <a href="mailto:cdiresta2019@my.fit.edu" class="muted-link">cdiresta2019@my.fit.edu</a>
+                </h6>
+                <p class="card-body">Computer Science senior.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+        <h3>Semester 1</h3>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Plan</h5>
+            <h6 class="card-subtitle mb-2 text-muted">September 6</h6>
+            <a class="card-link" href="docs/plan_sem1.pdf">Plan</a>
+            <a class="card-link" href="docs/plan_presentation_sem1.pdf">Presentation</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Milestone 1</h5>
+            <h6 class="card-subtitle mb-2 text-muted">October 2</h6>
+            <a class="card-link" href="docs/mile1_srs.pdf">Requirements</a>
+            <a class="card-link" href="docs/mile1_design.pdf">Design</a>
+            <a class="card-link" href="docs/mile1_test.pdf">Test</a>
+            <a class="card-link" href="docs/mile1_presentation.pdf">Presentation</a>
+            <a class="card-link" href="docs/mile1_eval.pdf">Progress Evaluation</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Milestone 2</h5>
+            <h6 class="card-subtitle mb-2 text-muted">October 30</h6>
+            <a class="card-link" href="docs/mile2_presentation.pdf">Presentation</a>
+            <a class="card-link" href="docs/mile2_eval.pdf">Progress Evaluation</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Milestone 3</h5>
+            <h6 class="card-subtitle mb-2 text-muted">November 27</h6>
+            <a class="card-link" href="docs/mile3_presentation.pdf">Presentation</a>
+            <a class="card-link" href="docs/mile3_eval.pdf">Progress Evaluation</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+          <h3>Semester 2</h3>
+          <div class="card">
+              <div class="card-body">
+                  <h5 class="card-title">Plan</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">TBD</h6>
+                  <br>
+              </div>
+          </div>
+          <div class="card">
+              <div class="card-body">
+                  <h5 class="card-title">Milestone 4</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">TBD</h6>
+                  <br>
+              </div>
+          </div>
+          <div class="card">
+              <div class="card-body">
+                  <h5 class="card-title">Milestone 5</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">TBD</h6>
+                  <br>
+              </div>
+          </div>
+          <div class="card">
+              <div class="card-body">
+                  <h5 class="card-title">Milestone 6</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">TBD</h6>
+                  <br>
+              </div>
+          </div>
+
+        <!--
+        <h3>Semester 2</h3>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Plan</h5>
+            <h6 class="card-subtitle mb-2 text-muted">January 16</h6>
+            <a class="card-link" href="docs/plan_sem2.pdf">Plan</a>
+            <a class="card-link" href="docs/plan_presentation_sem2.pdf">Presentation</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Milestone 4</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Febuary 13</h6>
+            <a class="card-link" href="docs/mile4_presentation.pdf">Presentation</a>
+            <a class="card-link" href="docs/mile4_eval.pdf">Progress Evaluation</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Milestone 5</h5>
+            <h6 class="card-subtitle mb-2 text-muted">March 20</h6>
+            <a class="card-link" href="docs/mile5_poseter.pdf">Poster</a>
+            <a class="card-link" href="docs/mile5_ebook.docx">E-book Page</a>
+            <a class="card-link" href="docs/mile5_presentation.pdf">Presentation</a>
+            <a class="card-link" href="docs/mile5_eval.pdf">Progress Evaluation</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Milestone 6</h5>
+            <h6 class="card-subtitle mb-2 text-muted">April 17</h6>
+            <a class="card-link" href="docs/manual.pdf">User and/or Developer Manual</a>
+            <a class="card-link" href="https://youtu.be/LINK_HERE">Demo Video</a>
+            <a class="card-link" href="docs/mile6_presentation.pdf">Presentation</a>
+            <a class="card-link" href="docs/mile6_eval.pdf">Progress Evaluation</a>
+          </div>
+        </div>
+        -->
+      </div>
+    </div>
+  </div>
+  <br />
+
+  <script>
+    img_hack();
+    addEventListener('resize', img_hack);
+
+    function img_hack() {
+      if (window.innerWidth < 768)
+        for (x of document.getElementsByClassName("img-fluid"))
+          x.className = "img-fluid rounded-top"
+      else
+        for (x of document.getElementsByClassName("img-fluid"))
+          x.className = "img-fluid rounded-start"
+    }
+  </script>
+</body>
+
 </html>
