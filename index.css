@@ -1,0 +1,54 @@
+.background {
+  background-color: #0E1116;
+  color: #CBD1D8;
+}
+
+.card {
+  background-color: #23262C;
+  margin-top: 10px;
+}
+
+a {
+  color: #58A6FF;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #58A6FF;
+  text-decoration: underline !important;
+  cursor: pointer;
+}
+
+.muted-link {
+  color: #6c757d !important;
+  text-decoration: none !important;
+}
+
+.broken-link {
+  color: #5F676E !important;
+  text-decoration: none !important;
+}
+
+.broken-link:hover {
+  cursor: not-allowed !important;
+  text-decoration: none !important;
+}
+
+#external-links {
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+.external {
+  list-style-type: none;
+  padding-right: 20px;
+  font-size: 20px;
+  display: inline-block;
+}
+
+.external img {
+  width: 20px;
+  margin-right: 3px;
+  padding-top: 0px;
+  padding-bottom: 5px;
+}
