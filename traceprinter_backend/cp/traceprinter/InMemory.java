@@ -20,6 +20,7 @@ import com.sun.jdi.*;
 import com.sun.jdi.connect.*;
 
 import java.util.regex.*;
+import java.util.stream.*;
 import java.util.*;
 import java.io.*;
 
@@ -135,30 +136,31 @@ public class InMemory {
         DiagnosticCollector<JavaFileObject> errorCollector = new DiagnosticCollector<>();
         c2b.diagnosticListener = errorCollector;
 
-        /*
-          For some reason the JVM at Princeton doesn't actually figure out
-          how to read these particular files off its classpath. So we'll
-          just throw them all in there manually. 
-          TODO: Optimize and only use files actually referenced by student code.
-         */
-        boolean isPrinceton = System.getProperty("java.class.path").contains("cos126");
+        String[] cpFiles;
+        try { // List all files in cp/codeviz
+            cpFiles = Stream.of(new File("codeviz").listFiles())
+                .filter(file -> !file.isDirectory())
+                .map(File::getName)
+                .collect(Collectors.toSet())
+                .toArray(new String[0]);
+        }
+        catch(NullPointerException e) {
+            System.err.println(System.getProperty("user.dir") + "codeviz directory contains no valid .java files");
+            e.printStackTrace();
+            cpFiles = new String[0];
+        }
 
-        if (isPrinceton) {
-            String[][] fileinfo = new String[][] {
-                {"Stack", getFileContents("cp/visualizer-stdlib/Stack.java")},
-                {"Queue", getFileContents("cp/visualizer-stdlib/Queue.java")},
-                {"ST", getFileContents("cp/visualizer-stdlib/ST.java")},
-                {"StdIn", getFileContents("cp/visualizer-stdlib/StdIn.java")},
-                {"StdOut", getFileContents("cp/visualizer-stdlib/StdOut.java")},
-                {"Stopwatch", getFileContents("cp/visualizer-stdlib/Stopwatch.java")},
-                {mainClass, usercode}
-            };           
-            bytecode = c2b.compileFiles(fileinfo);
+        String[][] fileinfo = new String[cpFiles.length + 1][2];
+
+        for (int i = 0; i < cpFiles.length; i++) { // Stage all java files for compilation
+            String className = cpFiles[i].substring(0, cpFiles[i].indexOf('.')); // Remove ".java"
+            fileinfo[i][0] = className;
+            fileinfo[i][1] = getFileContents("codeviz/" + cpFiles[i]);
         }
-        else {
-            // do the normal thing
-            bytecode = c2b.compileFile(mainClass, usercode);
-        }
+        fileinfo[fileinfo.length - 1][0] = mainClass;
+        fileinfo[fileinfo.length - 1][1] = usercode;
+
+        bytecode = c2b.compileFiles(fileinfo); // Compile everything
 
         if (bytecode == null) {
             for (Diagnostic<? extends JavaFileObject> err : errorCollector.getDiagnostics())
