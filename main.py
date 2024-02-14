@@ -1,4 +1,5 @@
 import sys
+import trace
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 
@@ -13,6 +14,8 @@ class Color(QWidget):
 
 class MainWindow(QMainWindow):
     def __init__(self):
+        self.tracer = trace.Tracer()
+
         super(MainWindow, self).__init__()
 
         splitter = QSplitter(self)
@@ -55,6 +58,8 @@ class MainWindow(QMainWindow):
 
     def code_execute(self):
         usercode = self.code_edit.toPlainText()
+        self.tracer.execute(usercode)
+        print(self.tracer.trace_dict)
 
 def main():
     app = QApplication(sys.argv)

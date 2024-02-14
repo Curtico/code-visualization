@@ -2,6 +2,39 @@ import json
 import sys
 import subprocess
 
+class Tracer:
+    def __init__(self):
+        self.trace_dict = {}
+
+    def jsonify_java(self, usercode):
+        # Initialize
+        trace_input_dict = {
+            "usercode": usercode,
+            "options": {},
+            "args": [], # passed to main()
+            "stdin": ""
+        }
+
+        # Return
+        return json.dumps(trace_input_dict)
+
+    def execute(self, usercode):
+        trace_input_json = self.jsonify_java(usercode)
+
+        #print(trace_input_json) # DEBUG
+
+        traceprinter_command = "../java/bin/java -cp .:javax.json-1.0.jar:../java/lib/tools.jar traceprinter.InMemory"
+
+        trace_proc = subprocess.Popen(traceprinter_command.split(),
+                                      stdout=subprocess.PIPE,
+                                      stdin=subprocess.PIPE,
+                                      cwd="./traceprinter_backend/cp")
+
+        #print(trace_proc.communicate(input=trace_input_json.encode())[0])
+        self.trace_dict = json.loads(trace_proc.communicate(input=trace_input_json.encode())[0])
+
+
+'''
 #------------------#
 # Main (obviously) #
 #------------------#
@@ -101,3 +134,4 @@ def get_list(state, heap_id):
 #---------------------------------#
 if __name__ == "__main__":
     main(sys.argv)
+'''
