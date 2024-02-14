@@ -18,14 +18,22 @@ class MainWindow(QMainWindow):
         splitter = QSplitter(self)
 
         # Code pane setup
+        code_execute_button = QPushButton("Execute")
+        code_execute_button.released.connect(self.code_execute)
+
         code_pane_buttons = QWidget()
         code_pane_buttons_layout = QHBoxLayout(code_pane_buttons)
-        code_pane_buttons_layout.addWidget(QPushButton("Execute"))
+        code_pane_buttons_layout.addWidget(code_execute_button)
         code_pane_buttons_layout.addWidget(QPushButton("Step"))
+
+        self.code_edit = QPlainTextEdit()
+        code_font = QFont("Monospace", 12)
+        self.code_edit.setFont(code_font)
+        self.code_edit.setTabStopDistance(40)
 
         code_pane = QWidget()
         code_pane_layout = QVBoxLayout(code_pane)
-        code_pane_layout.addWidget(QPlainTextEdit())
+        code_pane_layout.addWidget(self.code_edit)
         code_pane_layout.addWidget(code_pane_buttons)
 
         # Add three panes to main splitter
@@ -44,6 +52,9 @@ class MainWindow(QMainWindow):
 
         self.setGeometry(100, 100, 1280, 720)
         self.setWindowTitle("CodeViz")
+
+    def code_execute(self):
+        usercode = self.code_edit.toPlainText()
 
 def main():
     app = QApplication(sys.argv)
