@@ -61,6 +61,18 @@ class MainWindow(QMainWindow):
         self.tracer.execute(usercode)
         print(self.tracer.trace_dict)
 
+        fmt = QTextCharFormat()
+        fmt.setUnderlineColor(QColor('red'))
+        fmt.setUnderlineStyle(QTextCharFormat.SpellCheckUnderline)
+
+        block = self.code_edit.document().findBlockByLineNumber(0)
+        blockPos = block.position()
+
+        cursor = QTextCursor(self.code_edit.document())
+        cursor.setPosition(blockPos)
+        cursor.select(QTextCursor.LineUnderCursor)
+        cursor.setCharFormat(fmt)
+
 def main():
     app = QApplication(sys.argv)
     window = MainWindow()
