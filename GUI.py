@@ -1,4 +1,5 @@
 import sys
+import trace
 
 from PyQt6 import QtGui
 from PyQt6.QtWidgets import *
@@ -40,6 +41,7 @@ class MyGraphicsView(QGraphicsView):
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
+
         self.setWindowIcon(QtGui.QIcon('CV.png'))
 
         code_execute_button = QPushButton("Execute")
@@ -90,7 +92,8 @@ class MainWindow(QMainWindow):
 
     def code_execute(self):
         usercode = self.code_edit.toPlainText()
-        print(usercode)
+        tracee = trace.Tracer(usercode)
+        #print(tracee)
 
 
 def main():
