@@ -45,13 +45,16 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QtGui.QIcon('CV.png'))
 
         code_execute_button = QPushButton("Execute")
-
+        step_forward_button = QPushButton("Step Forwards")
+        step_backwards_button = QPushButton("Step Backwards")
         code_pane_buttons = QWidget()
         code_pane_buttons_layout = QHBoxLayout(code_pane_buttons)
         code_pane_buttons_layout.addWidget(code_execute_button)
         code_execute_button.released.connect(self.code_execute)
-        code_pane_buttons_layout.addWidget(QPushButton("Step"))
-
+        code_pane_buttons_layout.addWidget(step_forward_button)
+        step_forward_button.released.connect(self.step)
+        code_pane_buttons_layout.addWidget(step_backwards_button)
+        step_backwards_button.released.connect(self.step_backwards)
         self.code_edit = QPlainTextEdit()
         code_font = QFont("Monospace", 12)
         self.code_edit.setFont(code_font)
@@ -70,9 +73,22 @@ class MainWindow(QMainWindow):
         left_splitter.setOrientation(Qt.Orientation.Horizontal)
         right_splitter.setOrientation(Qt.Orientation.Vertical)
 
+
+        self.primitive_output = QTextEdit(self)
+        self.primitive_output.setReadOnly(True)
+        self.primitive_output.setPlaceholderText("All Variables in the state will be shown here")
+        self.stdout_widget = QTextEdit(self)
+        self.stdout_widget.setReadOnly(True)
+        self.stdout_widget.setPlaceholderText("All Stdout will be shown here")
+        sub_right_splitter = QSplitter(self)
+        sub_right_splitter.addWidget(self.primitive_output)
+        sub_right_splitter.addWidget(self.stdout_widget)
+
+
+
         left_splitter.addWidget(code_pane)
         right_splitter.addWidget(self.view)
-        right_splitter.addWidget(Color('blue'))
+        right_splitter.addWidget(sub_right_splitter)
         right_splitter.setSizes([200, 200])
 
         main_splitter = QSplitter(self)
@@ -86,6 +102,8 @@ class MainWindow(QMainWindow):
 
         self.setGeometry(100, 100, 1280, 720)
         self.setWindowTitle("CodeViz")
+        self.state_index = 0
+        self.trace_report = None
 
     def draw_thing(self):
         self.view.draw_array(0, 100, 100, 5, 50)
@@ -93,8 +111,34 @@ class MainWindow(QMainWindow):
     def code_execute(self):
         usercode = self.code_edit.toPlainText()
         tracee = trace.Tracer(usercode)
-        #print(tracee)
+        self.trace_report = tracee
+        #self.show_state(tracee)
 
+    def show_state(self):
+        #print(type(trace.states[29].objects[0].name))
+        #print(trace.states[29].stdout)
+        #print(trace.states[29].objects[1].name)
+        self.primitive_output.clear()
+        for each in self.trace_report.states[self.state_index].objects:
+            print(each.name)
+            if each.instance == "primitive":
+                self.primitive_output.append(f"{each.name} = {each.value}")
+            elif each.instance == "LIST":
+                print(f"LIST = {each.name}, {each.value}")
+        self.stdout_widget.clear()
+        self.stdout_widget.append(self.trace_report.states[self.state_index].stdout)
+        print("End of Debug")
+    def step(self):
+        if self.state_index + 1 <= len(self.trace_report.states):
+            self.state_index += 1
+            print(f"State index -> {self.state_index}")
+            self.show_state()
+    def step_backwards(self):
+        if self.state_index == 0:
+           return
+        self.state_index -= 1
+        print(f"State index -> {self.state_index}")
+        self.show_state()
 
 def main():
     app = QApplication(sys.argv)
