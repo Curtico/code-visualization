@@ -26,16 +26,29 @@ class MyGraphicsView(QGraphicsView):
         self.setInteractive(True)
         self.scene = QGraphicsScene()
         self.setScene(self.scene)
+        self.arrow = QPixmap("arrow.png")
 
         self.scene.setSceneRect(-10000, -10000, 20000, 20000)
 
     def draw_square(self, x, y, width, height):
         self.scene.addRect(x, y, width, height)
 
-    def draw_array(self, y, width, height, items, distance):
+    def draw_array(self, y, width, height, items, distance,text):
+        self.scene.clear()
         for i in range(items):
             x = i * (width + distance)
             self.scene.addRect(x, y, width, height)
+            text_item = QGraphicsTextItem(str(text[i]))
+            text_item.setPos(x+width/2 - text_item.boundingRect().width()/2,y+height/2 - text_item.boundingRect().height()/2)
+            self.scene.addItem(text_item)
+            self.draw_arrow(x+width,y+50,x+distance+width,y+50)
+
+    def draw_arrow(self,start_x,start_y,end_x,end_y):
+        self.scene.addLine(start_x,start_y,end_x,end_y)
+        self.scene.addLine(end_x-10,end_y-5,end_x,end_y)
+        self.scene.addLine(end_x-10,end_y+5,end_x,end_y)
+
+
 
 
 class MainWindow(QMainWindow):
@@ -106,30 +119,35 @@ class MainWindow(QMainWindow):
         self.trace_report = None
 
     def draw_thing(self):
+        #debug
         self.view.draw_array(0, 100, 100, 5, 50)
 
     def code_execute(self):
         usercode = self.code_edit.toPlainText()
         tracee = trace.Tracer(usercode)
         self.trace_report = tracee
-        #self.show_state(tracee)
+        
 
     def show_state(self):
         #print(type(trace.states[29].objects[0].name))
         #print(trace.states[29].stdout)
         #print(trace.states[29].objects[1].name)
         self.primitive_output.clear()
+        self.view.scene.clear()
         for each in self.trace_report.states[self.state_index].objects:
             print(each.name)
             if each.instance == "primitive":
                 self.primitive_output.append(f"{each.name} = {each.value}")
             elif each.instance == "LIST":
                 print(f"LIST = {each.name}, {each.value}")
+                print(each.value)
+                print(len(each.value))
+                self.view.draw_array(0,100,100,len(each.value),50,each.value)
         self.stdout_widget.clear()
         self.stdout_widget.append(self.trace_report.states[self.state_index].stdout)
         print("End of Debug")
     def step(self):
-        if self.state_index + 1 <= len(self.trace_report.states):
+        if self.state_index + 1 < len(self.trace_report.states):
             self.state_index += 1
             print(f"State index -> {self.state_index}")
             self.show_state()
@@ -145,7 +163,6 @@ def main():
     window = MainWindow()
 
     window.show()
-    window.draw_thing()
 
     sys.exit(app.exec())
 
