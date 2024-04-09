@@ -2,14 +2,12 @@ import json
 import subprocess
 import sys
 
-
 class ListChangeIdentifier:
     def __init__(self, objects_index, list_index):
         self.objects_index = objects_index
         self.list_indices = list_index
 
         print(f"New ListChangeIdentifier({objects_index}, {list_index})")
-
 
 class JavaObject:
     def __init__(self, instance, name, value):
@@ -18,7 +16,6 @@ class JavaObject:
         self.value = value
 
         print(f"New JavaObject('{instance}', {name}, {value})")
-
 
 class State:
     empty_state = {
@@ -46,7 +43,8 @@ class State:
                 ref = encoded_locals[varname][1]
                 heap_item = self.heap[str(ref)]
 
-                if heap_item[0] == 'LIST':  # handle list
+
+                if heap_item[0] == 'LIST': # handle list
                     list_var_old = None
                     for obj in previous_state.objects:
                         if obj.name == varname:
@@ -55,7 +53,7 @@ class State:
 
                     list_var = []
                     for list_item in heap_item[1:]:
-                        if type(list_item) is list:  # Assume item 0 is "ELIDE"
+                        if type(list_item) is list: # Assume item 0 is "ELIDE"
                             for i in range(list_item[1]):
                                 list_var.append(list_var[-1])
                         else:
@@ -64,12 +62,12 @@ class State:
                     self.objects.append(JavaObject('LIST', varname, list_var))
                     for i in range(len(list_var)):
                         try:
-                            if list_var[i] != list_var_old[i]:  # Changed item
+                            if list_var[i] != list_var_old[i]: # Changed item
                                 print(f"{varname}[{i}] changed from {list_var_old[i]} to {list_var[i]}")
                                 self.changes.append(ListChangeIdentifier(len(self.objects) - 1, i))
-                        except:  # New item
+                        except: # New item
                             self.changes.append(ListChangeIdentifier(len(self.objects) - 1, i))
-            else:  # Handle primitive data type
+            else: # Handle primitive data type
                 self.objects.append(JavaObject('primitive', varname, encoded_locals[varname]))
                 var_old = None
                 for obj in previous_state.objects:
@@ -89,7 +87,7 @@ class Tracer:
         trace_input_dict = {
             "usercode": usercode,
             "options": {},
-            "args": [],  # massed to main()
+            "args": [], # massed to main()
             "stdin": ""
         }
 
@@ -105,7 +103,7 @@ class Tracer:
 
         trace_json = trace_proc.communicate(input=trace_input_json.encode())[0]
 
-        print(trace_json.decode('utf-8'))  # DEBUG
+        # print(trace_json.decode('utf-8')) # DEBUG
 
         self.states = Tracer.parse(trace_json)
 
@@ -114,7 +112,7 @@ class Tracer:
 
         trace_dict = json.loads(trace_json)
         trace = trace_dict['trace']
-
+        
         for state in trace:
             print(f"\nNew State at states[{len(states)}]")
             if len(states) > 0:
