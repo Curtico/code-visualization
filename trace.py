@@ -24,6 +24,7 @@ class State:
         'heap': {},
         'stack_to_render': []
     }
+
     def __init__(self, state_dict, previous_state=empty_state):
         self.objects = []
         self.changes = []
@@ -41,6 +42,7 @@ class State:
                 # Handle heap reference
                 ref = encoded_locals[varname][1]
                 heap_item = self.heap[str(ref)]
+
 
                 if heap_item[0] == 'LIST': # handle list
                     list_var_old = None
@@ -110,7 +112,7 @@ class Tracer:
 
         trace_dict = json.loads(trace_json)
         trace = trace_dict['trace']
-
+        
         for state in trace:
             print(f"\nNew State at states[{len(states)}]")
             if len(states) > 0:
