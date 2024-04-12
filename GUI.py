@@ -125,6 +125,7 @@ class MainWindow(QMainWindow):
     def code_execute(self):
         usercode = self.code_edit.toPlainText()
         tracee = trace.Tracer(usercode)
+        self.state_index = 0
         self.trace_report = tracee
         
 
