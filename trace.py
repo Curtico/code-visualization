@@ -32,7 +32,7 @@ class State:
         self.stdout = state_dict['stdout']
         self.heap = state_dict['heap']
 
-        ## For now, we only parse arrays and primitives ##
+        ## For now, we only parse arrays, linkedlists, and primitives ##
         encoded_locals = state_dict['stack_to_render'][0]['encoded_locals']
         for varname in state_dict['stack_to_render'][0]['ordered_varnames']:
             if varname == '__return__':
@@ -67,6 +67,34 @@ class State:
                                 self.changes.append(ListChangeIdentifier(len(self.objects) - 1, i))
                         except: # New item
                             self.changes.append(ListChangeIdentifier(len(self.objects) - 1, i))
+
+                elif heap_item[0] == 'INSTANCE':
+                    if heap_item[1] == 'LinkedList': # handle LinkedList
+                        list_var_old = None
+                        for obj in previous_state.objects:
+                            if obj.name == varname:
+                                list_var_old = obj.value
+                                break
+
+                        list_var = []
+
+                        if heap_item[2][1] != None: # if head != null
+                            node = self.heap[str(heap_item[2][1][1])]
+                            list_var.append(node[2][1])
+
+                            while(node[3][1] != None): # Iterate through LinkedList
+                                node = self.heap[str(node[3][1][1])]
+                                list_var.append(node[2][1])
+
+                            self.objects.append(JavaObject('LIST', varname, list_var))
+                            for i in range(len(list_var)):
+                                try:
+                                    if list_var[i] != list_var_old[i]: # Changed item
+                                        print(f"{varname}[{i}] changed from {list_var_old[i]} to {list_var[i]}")
+                                        self.changes.append(ListChangeIdentifier(len(self.objects) - 1, i))
+                                except: # New item
+                                    self.changes.append(ListChangeIdentifier(len(self.objects) - 1, i))
+
             else: # Handle primitive data type
                 self.objects.append(JavaObject('primitive', varname, encoded_locals[varname]))
                 var_old = None
@@ -103,7 +131,7 @@ class Tracer:
 
         trace_json = trace_proc.communicate(input=trace_input_json.encode())[0]
 
-        # print(trace_json.decode('utf-8')) # DEBUG
+        print(trace_json.decode('utf-8')) # DEBUG
 
         self.states = Tracer.parse(trace_json)
 
@@ -112,8 +140,12 @@ class Tracer:
 
         trace_dict = json.loads(trace_json)
         trace = trace_dict['trace']
-        
+
         for state in trace:
+            if state['stack_to_render'][0]['func_name'].split(':')[0] != 'main':
+                # Ignore states outside of main
+                continue
+
             print(f"\nNew State at states[{len(states)}]")
             if len(states) > 0:
                 states.append(State(state, states[-1]))
